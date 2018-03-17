@@ -1,0 +1,50 @@
+package com.mcii.service.member.account;
+
+import java.io.Serializable;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.mcii.entity.Account;
+import com.mcii.repository.account.AccountDao;
+
+@Service
+@Transactional
+public class AccountServiceImpl implements AccountService{
+	@Autowired 
+	@Qualifier("accountDaoImpl")
+	AccountDao accountDao;
+	
+	@Override
+	public Account get(Integer id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Serializable save(Account entity) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void delete(Account entity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void update(Account entity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Account getAccountById(Integer id) {
+		// TODO Auto-generated method stub
+		return accountDao.get(Account.class, id);
+	}
+
+}
