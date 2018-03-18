@@ -61,4 +61,30 @@ public class ActiveEnroll {
 //		PageRecord pageRecord = activeEnrollService.getActiveEnrollUser(activeid,page,pageSize);
 //		 return Tool.returnSuccess("查询成功",pageRecord);
 //	}
+	
+	/**
+	 * 检查某人是否参加了该活动
+	 */
+	@ResponseBody
+    @RequestMapping(value = "getIsEnroll",method = RequestMethod.GET)
+    public BaseResponse getIsEnroll(
+    		@RequestParam(required = true,defaultValue = "1")Integer activeid){
+		Account account = ThisUser.get();
+		Active active = activeService.getActiveById(activeid);
+		Enroll enroll = activeEnrollService.getIsEnroll(account,active);
+		return Tool.returnSuccess("查询成功", enroll);
+	}
+	
+	/**
+	 * 获取报名的活动
+	 */
+	@ResponseBody
+    @RequestMapping(value = "getEnrollActive",method = RequestMethod.GET)
+    public BaseResponse getEnrollActive(
+    		@RequestParam(required = true,defaultValue = "1")Integer page,
+    		@RequestParam(required = true,defaultValue = "5")Integer pageSize){
+		Account account = ThisUser.get();
+		PageRecord pageRecord = activeEnrollService.getEnrollActive(account,page,pageSize);
+		return Tool.returnSuccess("查询成功", pageRecord);
+	}
 }
