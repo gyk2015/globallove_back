@@ -16,12 +16,14 @@ import com.mcii.entity.AccountDtl;
 import com.mcii.entity.AccountFamily;
 import com.mcii.entity.AccountLifeHabit;
 import com.mcii.entity.Integral;
+import com.mcii.entity.Mate;
 import com.mcii.repository.account.AccountDao;
 import com.mcii.repository.accountBase.AccountBaseDao;
 import com.mcii.repository.accountDtlInfo.AccountDtlInfoDao;
 import com.mcii.repository.accountFamily.AccountFamilyDao;
 import com.mcii.repository.accountLifeHabit.AccountLifeHabitDao;
 import com.mcii.repository.integral.IntegralDao;
+import com.mcii.repository.mate.MateDao;
 import com.mcii.tools.MailUtil;
 import com.mcii.tools.Tool;
 import com.mcii.tools.UUIDutil;
@@ -54,6 +56,9 @@ public class LoginServiceImpl implements LoginService{
 	@Qualifier("integralDaoImpl")
 	IntegralDao integralDao;
 	
+	@Autowired 
+	@Qualifier("mateDaoImpl")
+	MateDao mateDao;
 	
 	@Override
     public void regist(String username,String password,String userphone,String useremail,int usertype){
@@ -90,8 +95,27 @@ public class LoginServiceImpl implements LoginService{
         integral.setIntegral(5);
         integralDao.save(integral);
         
+        Mate mate = new Mate();
+        mate.setAccountid(account);
+        mate.setChild("无");
+        mate.setEducation("本科");
+        mate.setEndage(35);
+        mate.setEndheight(180);
+        mate.setEndsalary(15000);
+        mate.setHouse("租房");
+        mate.setMarrystatus("未婚");
+        mate.setPlace("广州市");
+        mate.setStartage(18);
+        mate.setStartheight(150);
+        mate.setStartsalary(5000);
+        mateDao.save(mate);
+        
         try {
-			MailUtil.sendMail(useremail, code);
+        	String[] to = {useremail};
+        	String[] fileList = new String[0];
+        	String title = "欢迎注册";
+        	String content = "<h1>尊敬的用户您好，欢迎注册globallove，激活请点击:</h1><h3><a href='http://localhost:8080/#/regist?code="+code+"'>http://localhost:8080/#/regist?code="+code+"</a></h3>";
+			MailUtil.sendMail(to,title,content,fileList);
 		} catch (MessagingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -24,6 +24,7 @@ public class Account  implements Serializable{
     private String emailcode;
     private int userstate;
     private int userlevel;
+    private String headimg;
 
 	@Id
     @Column(name = "id")
@@ -106,5 +107,14 @@ public class Account  implements Serializable{
 	}
 	public void setUserlevel(int userlevel) {
 		this.userlevel = userlevel;
+	}
+	
+    @Basic
+    @Column(name = "headimg")
+	public String getHeadimg() {
+		return headimg;
+	}
+	public void setHeadimg(String headimg) {
+		this.headimg = headimg;
 	}
 }

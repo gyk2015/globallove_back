@@ -7,7 +7,7 @@ import com.mcii.tools.PageRecord;
 
 public interface MoodService  extends BaseService<Mood>{
 	//获取心情
-	PageRecord listMood(Integer page, Integer pageSize, Integer id);
+	PageRecord listMood(Integer page, Integer pageSize, Account id);
 	//添加心情
 	void saveMood(Account account, String content);
 

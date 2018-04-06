@@ -24,9 +24,6 @@ public class ActiveEnrollServiceImpl implements ActiveEnrollService{
 	@Qualifier("activeEnrollDaoImpl")
 	ActiveEnrollDao activeEnrollDao;
 	
-//	@Autowired 
-//	@Qualifier("activeServiceImpl ")
-//	ActiveService activeService;
 
 	@Override
 	public Enroll get(Integer id) {
@@ -77,15 +74,14 @@ public class ActiveEnrollServiceImpl implements ActiveEnrollService{
 		return enroll;
 	}
 
-//	@Override
-//	public PageRecord getActiveEnrollUser(Integer activeid, Integer page,
-//			Integer pageSize) {
-//		// TODO Auto-generated method stub
-//		Active active = activeService.getActiveById(activeid);
-//		String hql = "from Enroll where activeid=?0";
-//		Query<Enroll> query = activeEnrollDao.queryByHql(hql);
-//		query.setParameter(0, active);
-//		return Tool.pageList(page,pageSize,query);
-//	}
+	@Override
+	public PageRecord getActiveEnrollUser(Active active, Integer page,
+			Integer pageSize) {
+		String hql = "from Enroll where activeid=?0";
+		Query<Enroll> query = activeEnrollDao.queryByHql(hql);
+		query.setParameter(0, active);
+		return Tool.pageList(page,pageSize,query);
+	}
+
 
 }

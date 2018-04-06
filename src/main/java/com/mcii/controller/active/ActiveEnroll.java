@@ -13,6 +13,7 @@ import com.mcii.entity.Active;
 import com.mcii.entity.Enroll;
 import com.mcii.service.active.ActiveService;
 import com.mcii.service.activeEnroll.ActiveEnrollService;
+import com.mcii.service.member.account.AccountService;
 import com.mcii.tools.BaseResponse;
 import com.mcii.tools.PageRecord;
 import com.mcii.tools.ThisUser;
@@ -28,6 +29,10 @@ public class ActiveEnroll {
 	@Autowired
     @Qualifier("activeServiceImpl")
     ActiveService activeService;
+	
+	@Autowired
+	@Qualifier("accountServiceImpl")
+	AccountService accountService;
     
 	/**
 	 * 报名活动
@@ -52,15 +57,16 @@ public class ActiveEnroll {
 	/**
 	 * 获取报名某活动人员列表
 	 */
-//	@ResponseBody
-//    @RequestMapping(value = "getEnrollUser",method = RequestMethod.GET)
-//    public BaseResponse getEnrollUser(
-//    		@RequestParam(required = true,defaultValue = "1")Integer activeid,
-//    		@RequestParam(required = true,defaultValue = "1")Integer page,
-//            @RequestParam(required = true,defaultValue = "5")Integer pageSize){
-//		PageRecord pageRecord = activeEnrollService.getActiveEnrollUser(activeid,page,pageSize);
-//		 return Tool.returnSuccess("查询成功",pageRecord);
-//	}
+	@ResponseBody
+    @RequestMapping(value = "getEnrollUser",method = RequestMethod.GET)
+    public BaseResponse getEnrollUser(
+    		@RequestParam(required = true,defaultValue = "1")Integer activeid,
+    		@RequestParam(required = true,defaultValue = "1")Integer page,
+            @RequestParam(required = true,defaultValue = "5")Integer pageSize){
+		Active active = activeService.getActiveById(activeid);
+		PageRecord pageRecord = activeEnrollService.getActiveEnrollUser(active,page,pageSize);
+		 return Tool.returnSuccess("查询成功",pageRecord);
+	}
 	
 	/**
 	 * 检查某人是否参加了该活动
@@ -84,6 +90,20 @@ public class ActiveEnroll {
     		@RequestParam(required = true,defaultValue = "1")Integer page,
     		@RequestParam(required = true,defaultValue = "5")Integer pageSize){
 		Account account = ThisUser.get();
+		PageRecord pageRecord = activeEnrollService.getEnrollActive(account,page,pageSize);
+		return Tool.returnSuccess("查询成功", pageRecord);
+	}
+	
+	/**
+	 * 获取他人报名的活动
+	 */
+	@ResponseBody
+    @RequestMapping(value = "getOtherEnrollActive",method = RequestMethod.GET)
+    public BaseResponse getOtherEnrollActive(
+    		@RequestParam(required = true,defaultValue = "1")Integer id,
+    		@RequestParam(required = true,defaultValue = "1")Integer page,
+    		@RequestParam(required = true,defaultValue = "5")Integer pageSize){
+		Account account = accountService.getAccountById(id);
 		PageRecord pageRecord = activeEnrollService.getEnrollActive(account,page,pageSize);
 		return Tool.returnSuccess("查询成功", pageRecord);
 	}

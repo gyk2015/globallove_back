@@ -10,10 +10,7 @@ public interface AccountInfoService   extends BaseService<AccountBase>{
 
 	//修改基本资料
 	void updateInfo(Account account, String realname, String sex, Integer age,
-			Integer height, Integer weight, String salary, String education,
+			Integer height, Integer weight, Integer salary, String education,
 			String workplace, String marrystatus, String nativeplace);
 	
-	void setAccountImg(Account account,String filePath);
-
-	String getAccountImg(Account account);
 }

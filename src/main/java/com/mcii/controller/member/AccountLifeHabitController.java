@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.mcii.entity.Account;
 import com.mcii.entity.AccountBase;
 import com.mcii.entity.AccountLifeHabit;
+import com.mcii.service.member.account.AccountService;
 import com.mcii.service.member.accountLifeHabit.AccountLifeHabitService;
 import com.mcii.tools.BaseResponse;
 import com.mcii.tools.ThisUser;
@@ -23,6 +24,10 @@ public class AccountLifeHabitController {
 	@Qualifier("accountLifeHabitServiceImpl")
 	AccountLifeHabitService accountLifeHabitService;
 	
+	@Autowired
+	@Qualifier("accountServiceImpl")
+	AccountService accountService;
+	
 	/**
 	 * 获取生活习惯信息
 	 */
@@ -31,6 +36,19 @@ public class AccountLifeHabitController {
 	public BaseResponse getLifeHabit()
 	{
 		Account account = ThisUser.get();
+		AccountLifeHabit accountLifeHabit = accountLifeHabitService.getAccountLifeHabitById(account);
+		return Tool.returnSuccess("获取信息成功",accountLifeHabit);
+	}
+	
+	/**
+	 * 获取他人生活习惯信息
+	 */
+	@ResponseBody
+    @RequestMapping(value = "getOtherLifeHabit",method = RequestMethod.GET)
+	public BaseResponse getOtherLifeHabit(
+			@RequestParam(required = true)Integer id)
+	{
+		Account account = accountService.getAccountById(id);
 		AccountLifeHabit accountLifeHabit = accountLifeHabitService.getAccountLifeHabitById(account);
 		return Tool.returnSuccess("获取信息成功",accountLifeHabit);
 	}

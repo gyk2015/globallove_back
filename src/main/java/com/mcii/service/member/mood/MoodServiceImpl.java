@@ -48,9 +48,9 @@ public class MoodServiceImpl implements MoodService{
 	}
 
 	@Override
-	public PageRecord listMood(Integer page, Integer pageSize, Integer id) {
+	public PageRecord listMood(Integer page, Integer pageSize, Account id) {
 		// TODO Auto-generated method stub
-		String hql = "from Mood where publishid=?0 order by id desc";
+		String hql = "from Mood where publishid=?0 order by time desc";
 		Query<Mood> query = moodDao.queryByHql(hql);
 		query.setParameter(0, id);
 		return Tool.pageList(page,pageSize,query);

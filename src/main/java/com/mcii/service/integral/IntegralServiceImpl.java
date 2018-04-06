@@ -43,7 +43,6 @@ public class IntegralServiceImpl implements IntegralService {
 
 	@Override
 	public void updateIntegral(Account account, int i) {
-		// TODO Auto-generated method stub
 		String hql = "from Integral where accountid=?0";
 		Query<Integral> query = integralDao.queryByHql(hql);
 		query.setParameter(0, account);
@@ -55,7 +54,6 @@ public class IntegralServiceImpl implements IntegralService {
 
 	@Override
 	public Integral getIntegralById(Account account) {
-		// TODO Auto-generated method stub
 		String hql = "from Integral where accountid=?0";
 		Query<Integral> query = integralDao.queryByHql(hql);
 		query.setParameter(0, account);

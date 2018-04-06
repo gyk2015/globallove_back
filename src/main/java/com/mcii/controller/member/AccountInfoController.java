@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.mcii.entity.Account;
 import com.mcii.entity.AccountBase;
+import com.mcii.service.member.account.AccountService;
 import com.mcii.service.member.accountInfo.AccountInfoService;
 import com.mcii.tools.BaseResponse;
 import com.mcii.tools.ThisUser;
@@ -27,6 +28,10 @@ public class AccountInfoController {
 	@Qualifier("accountInfoServiceImpl")
 	AccountInfoService accountInfoService;
 	
+	@Autowired
+	@Qualifier("accountServiceImpl")
+	AccountService accountService;
+	
 	 @Autowired  
 	 private HttpServletRequest request;
 	
@@ -36,9 +41,21 @@ public class AccountInfoController {
 	@ResponseBody
     @RequestMapping(value = "getBaseInfo",method = RequestMethod.GET)
 	public BaseResponse getBaseInfo()
-//			@RequestParam(required = true)Integer accountId)
 	{
 		Account account = ThisUser.get();
+		AccountBase accountbase = accountInfoService.getAccountInfoById(account);
+		return Tool.returnSuccess("获取信息成功",accountbase);
+	}
+	
+	/**
+	 * 获取他人基础信息
+	 */
+	@ResponseBody
+    @RequestMapping(value = "getOtherBaseInfo",method = RequestMethod.GET)
+	public BaseResponse getOtherBaseInfo(
+			@RequestParam(required = true)Integer id)
+	{
+		Account account = accountService.getAccountById(id);
 		AccountBase accountbase = accountInfoService.getAccountInfoById(account);
 		return Tool.returnSuccess("获取信息成功",accountbase);
 	}
@@ -54,7 +71,7 @@ public class AccountInfoController {
 			@RequestParam(required = false) Integer age,
 			@RequestParam(required = false) Integer height,
 			@RequestParam(required = false) Integer weight,
-			@RequestParam(required = false) String salary,
+			@RequestParam(required = false) Integer salary,
 			@RequestParam(required = false) String education,
 			@RequestParam(required = false) String workplace,
 			@RequestParam(required = false) String marrystatus,
@@ -64,39 +81,5 @@ public class AccountInfoController {
 		return Tool.returnSuccess("修改成功", null);
 	}
 	
-	/**
-	 * 设置头像
-	 */
-	@ResponseBody
-    @RequestMapping(value = "setHeadImg",method = RequestMethod.POST)
-	public BaseResponse setHeadImg(
-			@RequestParam("file") MultipartFile file){
-		Account account = ThisUser.get();
-//		File folder = new File(basePath+prefix+account.getId());
-		if (!file.isEmpty()) {  
-            try {  
-                // 文件保存路径  
-                String filePath = request.getSession().getServletContext().getRealPath("/") + "upload/"  
-                        + file.getOriginalFilename();  
-                // 转存文件  
-                file.transferTo(new File(filePath)); 
-                accountInfoService.setAccountImg(account,filePath);
-                return Tool.returnSuccess("上传成功", null);
-            } catch (Exception e) {  
-                e.printStackTrace();  
-            }  
-        }  
-		return Tool.returnFail("上传失败", null);
-	}
 	
-	/**
-	 * 获取头像信息
-	 */
-	@ResponseBody
-    @RequestMapping(value = "getHeadImg",method = RequestMethod.GET)
-	public BaseResponse getHeadImg(){
-		Account account = ThisUser.get();
-		String headimg = accountInfoService.getAccountImg(account);
-		return Tool.returnSuccess("获取成功", headimg);
-	}
 }

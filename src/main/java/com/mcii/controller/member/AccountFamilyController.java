@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.mcii.entity.Account;
 import com.mcii.entity.AccountFamily;
 import com.mcii.service.accountFamily.AccountFamilyService;
+import com.mcii.service.member.account.AccountService;
 import com.mcii.tools.BaseResponse;
 import com.mcii.tools.ThisUser;
 import com.mcii.tools.Tool;
@@ -22,6 +23,10 @@ public class AccountFamilyController {
 	@Qualifier("accountFamilyServiceImpl")
 	AccountFamilyService accountFamilyService;
 	
+	@Autowired
+	@Qualifier("accountServiceImpl")
+	AccountService accountService;
+	
 	/**
 	 * 获取家庭信息
 	 */
@@ -30,6 +35,19 @@ public class AccountFamilyController {
 	public BaseResponse getFamilyInfo()
 	{
 		Account account = ThisUser.get();
+		AccountFamily accountFamily = accountFamilyService.getAccountFamilyById(account);
+		return Tool.returnSuccess("获取信息成功",accountFamily);
+	}
+	
+	/**
+	 * 获取他人家庭信息
+	 */
+	@ResponseBody
+    @RequestMapping(value = "getOtherFamilyInfo",method = RequestMethod.GET)
+	public BaseResponse getOtherFamilyInfo(
+			@RequestParam(required = true)Integer id)
+	{
+		Account account = accountService.getAccountById(id);
 		AccountFamily accountFamily = accountFamilyService.getAccountFamilyById(account);
 		return Tool.returnSuccess("获取信息成功",accountFamily);
 	}

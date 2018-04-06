@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mcii.entity.Account;
 import com.mcii.entity.Mood;
+import com.mcii.service.member.account.AccountService;
 import com.mcii.service.member.mood.MoodService;
 import com.mcii.tools.BaseResponse;
 import com.mcii.tools.PageRecord;
@@ -23,6 +24,10 @@ public class MoodController {
 	@Qualifier("moodServiceImpl")
 	MoodService moodService;
 	
+	@Autowired
+	@Qualifier("accountServiceImpl")
+	AccountService accountService;
+	
 	/**
 	 * 获取自己心情
 	 */
@@ -32,7 +37,7 @@ public class MoodController {
 			@RequestParam(required = true,defaultValue = "1")Integer page,
             @RequestParam(required = true,defaultValue = "5")Integer pageSize){
 		Account account = ThisUser.get();
-		PageRecord pageRecord = moodService.listMood(page, pageSize, account.getId());
+		PageRecord pageRecord = moodService.listMood(page, pageSize, account);
 		if (pageRecord.getCurrentPage()==0||pageRecord.getObjects().size()==0)
             return Tool.returnFail("没有信息",null);
         return Tool.returnSuccess("查询成功",pageRecord);
@@ -50,7 +55,7 @@ public class MoodController {
 		if (content==null)
 			return Tool.returnFail("内容不可为空",null);
 		moodService.saveMood(account,content);
-		return Tool.returnSuccess("提交成功",moodService.listMood(1,5,account.getId()));
+		return Tool.returnSuccess("提交成功",moodService.listMood(1,5,account));
 	}
 	
 	/**
@@ -62,7 +67,8 @@ public class MoodController {
 			@RequestParam(required = true,defaultValue = "1")Integer page,
             @RequestParam(required = true,defaultValue = "5")Integer pageSize,
             @RequestParam(required = true)Integer id){
-		PageRecord pageRecord = moodService.listMood(page, pageSize, id);
+		Account account = accountService.getAccountById(id);
+		PageRecord pageRecord = moodService.listMood(page, pageSize,account);
 		if (pageRecord.getCurrentPage()==0||pageRecord.getObjects().size()==0)
             return Tool.returnFail("没有信息",null);
         return Tool.returnSuccess("查询成功",pageRecord);
@@ -79,6 +85,6 @@ public class MoodController {
 		Account account = ThisUser.get();
 		Mood mood = moodService.get(id);
 		moodService.delete(mood);
-		return Tool.returnSuccess("删除成功",moodService.listMood(1,5,account.getId()));
+		return Tool.returnSuccess("删除成功",moodService.listMood(1,5,account));
 	}
 }

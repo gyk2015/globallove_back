@@ -23,12 +23,11 @@ public class AccountBase  implements Serializable{
     private int age;
     private int height;
     private int weight;
-    private String salary;
+    private int salary;
     private String education;
     private String workplace;
     private String marrystatus;
     private String nativeplace;
-    private String headimg;
     
 
 	@Id
@@ -98,10 +97,10 @@ public class AccountBase  implements Serializable{
 	
 	@Basic
     @Column(name = "salary")
-	public String getSalary() {
+	public int getSalary() {
 		return salary;
 	}
-	public void setSalary(String salary) {
+	public void setSalary(int salary) {
 		this.salary = salary;
 	}
 	
@@ -141,13 +140,5 @@ public class AccountBase  implements Serializable{
 		this.nativeplace = nativeplace;
 	}
 	
-	@Basic
-    @Column(name = "headimg")
-	public String getHeadimg() {
-		return headimg;
-	}
-	public void setHeadimg(String headimg) {
-		this.headimg = headimg;
-	}
 
 }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mcii.entity.Account;
 import com.mcii.entity.AccountDtl;
+import com.mcii.service.member.account.AccountService;
 import com.mcii.service.member.accountDtlInfo.AccountDtlInfoService;
 import com.mcii.tools.BaseResponse;
 import com.mcii.tools.ThisUser;
@@ -22,6 +23,10 @@ public class AccountDtlInfoController {
 	@Qualifier("accountDtlInfoServiceImpl")
 	AccountDtlInfoService accountDtlInfoService;
 	
+	@Autowired
+	@Qualifier("accountServiceImpl")
+	AccountService accountService;
+	
 	/**
 	 * 获取详细信息
 	 */
@@ -29,6 +34,17 @@ public class AccountDtlInfoController {
     @RequestMapping(value = "getDtlInfo",method = RequestMethod.GET)
 	public BaseResponse getDtlInfo(){
 		Account account = ThisUser.get();
+		AccountDtl accountDtl = accountDtlInfoService.getAccountDtlInfoById(account);
+		return Tool.returnSuccess("获取信息成功",accountDtl);
+	}
+	
+	/**
+	 * 获取他人详细信息
+	 */
+	@ResponseBody
+    @RequestMapping(value = "getOtherDtlInfo",method = RequestMethod.GET)
+	public BaseResponse getOtherDtlInfo(@RequestParam(required = true)Integer id){
+		Account account = accountService.getAccountById(id);
 		AccountDtl accountDtl = accountDtlInfoService.getAccountDtlInfoById(account);
 		return Tool.returnSuccess("获取信息成功",accountDtl);
 	}

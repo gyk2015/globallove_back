@@ -22,13 +22,12 @@ public class AccountInfoServiceImpl implements AccountInfoService{
 	public AccountBase getAccountInfoById(Account account){
 		String hql = "from AccountBase where accountid=?0";
 		Query<AccountBase> query = accountBaseDao.queryByHql(hql);
-		System.out.println(account.getId());
         query.setParameter(0,account);
         return query.uniqueResult();
 	}
 	
 	public void updateInfo(Account account, String realname, String sex, Integer age,
-			Integer height, Integer weight, String salary, String education,
+			Integer height, Integer weight, Integer salary, String education,
 			String workplace, String marrystatus, String nativeplace){
 		AccountBase accountbase = getAccountInfoById(account);
 		accountbase.setRealname(realname);
@@ -68,19 +67,6 @@ public class AccountInfoServiceImpl implements AccountInfoService{
 		
 	}
 
-	@Override
-	public void setAccountImg(Account account, String filePath) {
-		// TODO Auto-generated method stub
-		AccountBase accountbase = getAccountInfoById(account);
-		accountbase.setHeadimg(filePath);
-	}
-
-	@Override
-	public String getAccountImg(Account account) {
-		// TODO Auto-generated method stub
-		AccountBase accountbase = getAccountInfoById(account);
-		String headimg = accountbase.getHeadimg();
-		return headimg;
-	}
+	
 
 }
